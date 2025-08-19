@@ -67,29 +67,65 @@ let employee: {
 employee.name = "shafayat"; //from outside we can change the values
 // employee.id = 10; //that will be error because of readonly.. this means immutable or unchanged
 
-
 // Type 2:
-type NewEmployee={
-    readonly id: number;
+type NewEmployee = {
+  readonly id: number;
   name: string;
   retire: (date: Date) => void;
-}
+};
 
-let newEmployee: NewEmployee={
-    id:2,
-    name: "Hossain",
-    retire: (date: Date) => {
+let newEmployee: NewEmployee = {
+  id: 2,
+  name: "Hossain",
+  retire: (date: Date) => {
     console.log(date);
   },
+};
+
+// -----> Union Types/ operator = we can use OR here
+function kgToLbs(weight: number | string): number | string {
+  if (typeof weight == "number") {
+    return weight * 2.2;
+  }
+  return weight;
 }
 
+kgToLbs(10);
 
-// -----> Union Types
-function kgToLbs(weight: number | string): number | string{
-    if (typeof(weight) == "number") {
-        return weight*2.2;
-    }
-    return weight;
+// -----> Intersection Types = Use like AND
+type Draggable = {
+  drag: () => void;
+};
+
+type Resizable = {
+  resize: () => void;
+};
+
+type UIWidget = Draggable & Resizable;
+
+let textBox: UIWidget = {
+  drag: () => {},
+  resize: () => {},
+};
+
+// -----> Literal Types
+type Quantity = 50;
+let quantity: Quantity; //exact or specific value
+
+// ------> Nullable Types
+function greet(name: string) {
+  console.log(name.toUpperCase());
+}
+// greet(null) //cant give null as we set string as a parameter type
+// if we want to use this we have to use null as a union operator
+
+// ------>Optional Chaining
+type Customer = {
+  birthday: Date;
+};
+function getCustomer(id: number): Customer | null | undefined {
+  return id === 0 ? null : { birthday: new Date() };
 }
 
-kgToLbs(10)
+let customer = getCustomer(0);
+console.log(customer?.birthday);
